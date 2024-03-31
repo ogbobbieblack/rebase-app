@@ -1,7 +1,9 @@
 useClient;
+
 import React, { useState, useEffect } from "react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import styles from "./Dashboard.module.css";
+
+
 import { useAccount, useBalance, useClient, useReadContract } from "wagmi";
 import { rebaseABI, tokenAddr } from "../constant/rebaseABI";
 import { useIsMounted } from "../useIsMounted";
@@ -9,6 +11,18 @@ import {
   calcSell,
   calcBNBPrice,
 } from "../priceFeed/isTokenPrice";
+
+
+//Animations 
+
+import dashboardAnimation from './dashboardAnimation.json'
+import burnAnimation from './burnAnimation.json'
+import dynamic from 'next/dynamic';
+import Image from "next/image";
+const Lottie = dynamic(() => import('lottie-react'), { ssr: false });
+import logo from './logo.png'
+
+
 
 function rebaseCalc(cp: any, pt: any, rl: any) {
   return (((cp - pt) / pt) * 100) / rl;
@@ -68,18 +82,22 @@ const Dashboard = () => {
     price();
     holdings();
   }, [balance0f]);
+  
 
   return (
-    <div>
-      <ConnectButton />
-      <main className={styles.main}>
-        <div className={styles.card}>
-          <p className={styles.description}>
-            Welcome user {mounted ? address && <p>{address}</p> : null}
-          </p>
-          <p className={styles.title}>
-            Your token balance is{" "}
-            <span>
+    <div className="grainy w-full min-h-screen px-4 sm:px-36 py-12 flex flex-col gap-12">
+      <div className="flex justify-between w-full items-center gap-10">
+        <a href="https://basegains.com/">
+
+          <Image src={logo} width={30} height={30} className="w-16 rounded-full border-4 border-black" alt="" />
+        </a>
+        <ConnectButton />
+      </div>
+      <main className=' grid gap-4 items-center  justify-center grid-cols-1 sm:grid-cols-4'>
+        <div className='w-full sm:col-span-3 sm:text-2xl flex sm:flex-row flex-col-reverse items-center  justify-between border-4 px-10 py-8 sm:px-4 bg-blue-600 border-orange-600 text-white text-xl'>
+          <p className="text-4xl font-bold">
+            Your current $BASEG balance is{" "}
+            <span className="inline-block">
               {mounted
                 ? balance && (
                     <p>
@@ -90,11 +108,43 @@ const Dashboard = () => {
                 : null}
             </span>
           </p>
+          <Lottie className="w-1/2 sm:h-[250px] inline-block " animationData={dashboardAnimation} />
         </div>
 
-        <div className={styles.grid}>
-          <span className={styles.card}>
-            <h2>Rebase Counts</h2>
+                {/* FIX THIS PART 
+        FIX THIS PART 
+        FIX THIS PART 
+        FIX THIS PART 
+        FIX THIS PART 
+        FIX THIS PART  */}
+
+          <div className="text-black text-lg sm:text-sm font-semibold gray border-blue-600 border-4 px-10 py-10 sm:py-20 sm:px-2 gap-4">
+      
+            <div className="flex flex-col gap-4 items-start">
+              <h2 className="text-2xl font-bold">Peg Information</h2>
+              <h5>
+                PEG ASSET:
+                {mounted && <p>{rebaseCount?.toString()}</p>}
+              </h5>
+              <h5>
+                PEG PRICE:
+                {mounted && <p>{nextRebaseTimeStamp?.toString()}</p>}{" "}
+              </h5>
+              <h5>
+                $BASEG PEG PRICE:
+                {mounted && <p>{nextRebaseTimeStamp?.toString()}</p>}{" "}
+              </h5>
+            </div>
+
+          </div>  
+
+      {/* THE PART ENDS HERE
+      THE PART ENDS HERE
+      THE PART ENDS HERE
+      THE PART ENDS HERE */}
+
+          <div className="bg-orange-600 text-lg sm:col-span-2 sm:text-2xl font-semibold text-white border-blue-600 border-4 px-10 py-8 sm:px-4 flex flex-col gap-4">
+            <h2 className="text-2xl sm:text-4xl font-bold">Rebase Information</h2>
             <h5>
               Rebase Epoch:
               {mounted && <p>{rebaseCount?.toString()}</p>}
@@ -113,10 +163,10 @@ const Dashboard = () => {
                 {"%"}
               </p>
             </h5>
-          </span>
+          </div>
 
-          <span className={styles.card}>
-            <h2>Rebase Stats</h2>
+          <div className="bg-black text-lg sm:col-span-2 sm:text-2xl text-white border-orange-600 border-4 px-10 py-10 sm:px-4 flex flex-col gap-4">
+            <h2 className="text-2xl sm:text-4xl font-bold">Rebase Stats</h2>
             <h5>
               Oracle Price:{" "}
               {mounted
@@ -153,13 +203,75 @@ const Dashboard = () => {
                   )
                 : null}{" "}
             </h5>
-          </span>
+          </div>
 
-          <span className={styles.card}>
-            <h2>Rebase History</h2>
-            <p>Discover boilerplate example RainbowKit projects.</p>
-          </span>
-        </div>
+
+        {/* FIX THIS PART 
+        FIX THIS PART 
+        FIX THIS PART 
+        FIX THIS PART 
+        FIX THIS PART 
+        FIX THIS PART  */}
+
+
+
+
+{/* FIX THIS PART 
+        FIX THIS PART 
+        FIX THIS PART 
+        FIX THIS PART 
+        FIX THIS PART 
+        FIX THIS PART  */}
+
+          <div className="text-white text-lg sm:text-sm font-semibold bg-blue-600 border-black border-4 px-10 py-10 sm:py-16 sm:px-2 gap-10">
+      
+            <div className="flex flex-col gap-4 items-start">
+              <h2 className="text-2xl font-bold">Peg Information</h2>
+              <h5>
+                 REBASE AMOUNT: 
+                
+                {mounted && <p>{rebaseCount?.toString()}</p>}
+              </h5>
+              <h5>
+                REBASE VALUE (USD)
+                {mounted && <p>{nextRebaseTimeStamp?.toString()}</p>}{" "}
+              </h5>
+              <h5>
+                COMPOUNDED INTEREST:
+                {mounted && <p>{nextRebaseTimeStamp?.toString()}</p>}{" "}
+              </h5>
+            </div>
+
+          </div>  
+
+      {/* THE PART ENDS HERE
+      THE PART ENDS HERE
+      THE PART ENDS HERE
+      THE PART ENDS HERE */}
+
+
+
+          <div className="text-black sm:col-span-3 text-lg font-semibold sm:text-2xl gray border-blue-600 border-4 px-10 py-10 sm:px-4 flex sm:flex-row-reverse justify-between flex-col gap-4">
+            <Lottie className="w-1/2 sm:h-[200px] inline-block" animationData={burnAnimation}/>
+            <div className="flex flex-col gap-4">
+              <h2 className="text-2xl sm:text-4xl font-bold">Total Tokens Burnt</h2>
+              <h5>
+                $BASEG TOKENS BURNT:
+                {mounted && <p>{rebaseCount?.toString()}</p>}
+              </h5>
+              <h5>
+                USD VALUE:
+                {mounted && <p>{nextRebaseTimeStamp?.toString()}</p>}{" "}
+              </h5>
+            </div>
+
+          </div>  
+
+      {/* THE PART ENDS HERE
+      THE PART ENDS HERE
+      THE PART ENDS HERE
+      THE PART ENDS HERE */}
+
       </main>
     </div>
   );
