@@ -249,13 +249,13 @@ const Dashboard = () => {
             {" "}
             Price target:{""}
             {mounted
-              ? balance && (
-                <p>
-                  {"$"}
-                  {priceTarget.toFixed(11) || "0"}
-                </p>
-              )
-              : null}
+                ? balance && (
+                  <p>
+                    {"$"}
+                    {pegPrice}
+                  </p>
+                )
+                : null}{" "}
           </h5>
           <h5>
             Rebase %:
