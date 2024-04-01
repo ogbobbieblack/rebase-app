@@ -1,4 +1,4 @@
-export const tokenAddr = "0xa5065f1a60824A6C6204cf10018F79dA4bC0F8B9";
+export const rebaseAIToken = "0xDe7a416ac821C77478340EEBaA21b68297025eF3"; //Beni
 
 export const rebaseABI = [
   {
@@ -1731,11 +1731,8 @@ export const swapABI = [
 //BASE 
 export const weth = "0x4200000000000000000000000000000000000006";
 export const usdt = "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913";
-export const rebaseAIToken = "0xDe7a416ac821C77478340EEBaA21b68297025eF3"; //beni
+export const pegAssetToken = "0xAC1Bd2486aAf3B5C0fc3Fd868558b082a531B2B4"; //toshi
 export const router = "0x4752ba5DBc23f44D87826276BF6Fd6b1C372aD24";
-
-
-//Addrs
 export const DEADWALLET = "0x000000000000000000000000000000000000dEaD";
 
 // NODE

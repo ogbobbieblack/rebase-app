@@ -1,16 +1,17 @@
 // import rebaseABI from "../constant/abi/TOKEN.json";
-import { rebaseABI, swapABI, BASE_MAINNET_RPC, usdt, rebaseAIToken, router, weth } from "../constant/rebaseABI";
+import { rebaseABI, swapABI, BASE_MAINNET_RPC, usdt, rebaseAIToken, pegAssetToken, router, weth } from "../constant/rebaseABI";
 import { ethers } from "ethers";
 
 const pancakeSwapContractMainnet = router.toLowerCase();
 const MainHepperToken = rebaseAIToken;
+const pegAssetT = pegAssetToken;
 const baseNode = BASE_MAINNET_RPC;
 const BNBMainnetTokenAddress = weth; //BNB
 const USDMainnetTokenAddress = usdt; //USDC
 const bnbToSell = ethers.parseEther("1");
 
 export async function calcSell(tokensToSell: any) {
-    const provider = new ethers.JsonRpcProvider(baseNode)
+  const provider = new ethers.JsonRpcProvider(baseNode)
 
   const tokenRouter = new ethers.Contract(MainHepperToken, rebaseABI, provider);
 
@@ -26,6 +27,32 @@ export async function calcSell(tokensToSell: any) {
     );
     amountOut = await router.getAmountsOut(tokensToSell, [
       MainHepperToken,
+      BNBMainnetTokenAddress,
+    ]);
+    amountOut = ethers.formatEther(amountOut[1]);
+  } catch (error) {}
+
+  if (!amountOut) return 0;
+  return amountOut;
+}
+
+export async function calcPegAssetSell(tokensToSell: any) {
+  const provider = new ethers.JsonRpcProvider(baseNode)
+
+  const tokenRouter = new ethers.Contract(pegAssetT, rebaseABI, provider);
+
+  let tokenDecimals = await tokenRouter.decimals();
+
+  tokensToSell = setDecimals(tokensToSell, tokenDecimals);
+  let amountOut;
+  try {
+    let router = new ethers.Contract(
+      pancakeSwapContractMainnet,
+      swapABI,
+      provider
+    );
+    amountOut = await router.getAmountsOut(tokensToSell, [
+      pegAssetT,
       BNBMainnetTokenAddress,
     ]);
     amountOut = ethers.formatEther(amountOut[1]);
