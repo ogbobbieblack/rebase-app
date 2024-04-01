@@ -75,9 +75,27 @@ const Dashboard = () => {
     functionName: "nextRebaseTimeStamp",
   });
 
-  const rebaseAmount = rebasePL.apply(undefined, [balance.data?.formatted, rebase_percent, rebaseCalc
+
+  const rebaseAmount = (rebasePL.apply(undefined, [balance.data?.formatted, rebase_percent, rebaseCalc
     .apply(undefined, [getPrice, priceTarget, rebaseLag])
-    .toFixed(2)]) || "0";
+    .toFixed(2)]) || "0");
+
+  const userBalance = mul.apply(undefined, [
+    getPrice.toFixed(4),
+    balance.data?.formatted,
+  ]).toFixed(2) || "0";
+
+  const pegPrice = mul.apply(undefined, [
+    baseg_baseline,
+    getPegAssetPrice.toFixed(11),
+  ]).toFixed(4) || "0";
+
+  const rebasePercent = rebaseCalc.apply(undefined, [getPrice, priceTarget, rebaseLag]).toFixed(2) || "0";
+
+  const tokenBurnt = mul.apply(undefined, [
+    getPrice.toFixed(11),
+    amountBurnt.data?.formatted,
+  ]).toFixed(2) || "0";
 
   useEffect(() => {
     const rebaseAIPrice = async () => {
@@ -99,6 +117,7 @@ const Dashboard = () => {
         setGetPegAssetPrice(priceInUSD);
       } catch (err) { }
     };
+
     rebaseAIPrice();
     pegAssetPrice();
 
@@ -126,11 +145,7 @@ const Dashboard = () => {
               {mounted
                 ? balance && (
                   <p>
-                    {balance.data?.formatted} {balance.data?.symbol} {" "} {"("} {"$"}{mul.apply(undefined, [
-                      getPrice.toFixed(4),
-                      balance.data?.formatted,
-                    ])
-                      .toFixed(2) || "0"}{")"}
+                    {balance.data?.formatted} {balance.data?.symbol} {" "} {"("} {"$"}{userBalance}{")"}
                   </p>
                 )
                 : null}
@@ -178,12 +193,7 @@ const Dashboard = () => {
                 ? balance && (
                   <p>
                     {"$"}
-                    {mul
-                      .apply(undefined, [
-                        baseg_baseline,
-                        getPegAssetPrice.toFixed(11),
-                      ])
-                      .toFixed(4) || "0"}
+                    {pegPrice}
                   </p>
                 )
                 : null}{" "}
@@ -248,9 +258,8 @@ const Dashboard = () => {
             {mounted
               ? balance && (
                 <p>
-                  {rebaseCalc
-                    .apply(undefined, [getPrice, priceTarget, rebaseLag])
-                    .toFixed(2) || "0"}
+                  { rebasePercent >= rebaseCap.toString() ? rebaseCap : rebasePercent}
+                  
                   {"%"}
                 </p>
               )
@@ -321,12 +330,7 @@ const Dashboard = () => {
                 && (
                   <p>
                     {"$"}
-                    {mul
-                      .apply(undefined, [
-                        getPrice.toFixed(11),
-                        amountBurnt.data?.formatted,
-                      ])
-                      .toFixed(2) || "0"}
+                    {tokenBurnt}
                   </p>
                 )
                 : null}{" "}
