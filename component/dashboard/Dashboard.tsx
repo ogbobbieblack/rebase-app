@@ -90,14 +90,14 @@ const Dashboard = () => {
     getPegAssetPrice.toFixed(11),
   ]).toFixed(4) || "0";
 
-  const rebasePercent = rebaseCalc.apply(undefined, [getPrice, priceTarget, rebaseLag]).toFixed(2) || "0";
+  const rebasePercent = rebaseCalc.apply(undefined, [getPrice, pegPrice, rebaseLag]).toFixed(2) || "0";
 
   const tokenBurnt = mul.apply(undefined, [
     getPrice.toFixed(11),
     amountBurnt.data?.formatted,
   ]).toFixed(2) || "0";
 
-  const rebaseFixToCap = rebasePercent >= rebaseCap.toString() ? rebaseCap : rebasePercent;
+  const rebaseFixToCap = rebasePercent >= rebaseCap.toString() ? rebaseCap : rebasePercent || rebasePercent <= rebaseCap.toString() ? 0 : rebasePercent;
 
   const rebaseProfitOrLoss = (rebasePL.apply(undefined, [balance.data?.formatted, rebase_percent, rebaseFixToCap]) || "0");
 
