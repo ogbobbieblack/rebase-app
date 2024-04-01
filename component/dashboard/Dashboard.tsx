@@ -75,10 +75,10 @@ const Dashboard = () => {
     functionName: "nextRebaseTimeStamp",
   });
 
-
-  const rebaseAmount = (rebasePL.apply(undefined, [balance.data?.formatted, rebase_percent, rebaseCalc
-    .apply(undefined, [getPrice, priceTarget, rebaseLag])
-    .toFixed(2)]) || "0");
+  // balance.data?.formatted
+  // const rebaseAmount = (rebasePL.apply(undefined, [500, rebase_percent, rebaseCalc
+  //   .apply(undefined, [getPrice, priceTarget, rebaseLag])
+  //   .toFixed(2)]) || "0");
 
   const userBalance = mul.apply(undefined, [
     getPrice.toFixed(4),
@@ -96,6 +96,10 @@ const Dashboard = () => {
     getPrice.toFixed(11),
     amountBurnt.data?.formatted,
   ]).toFixed(2) || "0";
+
+  const rebaseFixToCap = rebasePercent >= rebaseCap.toString() ? rebaseCap : rebasePercent;
+
+  const rebaseProfitOrLoss = (rebasePL.apply(undefined, [balance.data?.formatted, rebase_percent, rebaseFixToCap]) || "0");
 
   useEffect(() => {
     const rebaseAIPrice = async () => {
@@ -258,8 +262,8 @@ const Dashboard = () => {
             {mounted
               ? balance && (
                 <p>
-                  { rebasePercent >= rebaseCap.toString() ? rebaseCap : rebasePercent}
-                  
+                  {rebaseFixToCap}
+
                   {"%"}
                 </p>
               )
@@ -286,11 +290,11 @@ const Dashboard = () => {
             <h2 className="text-2xl font-bold">Your Expected Base Gains For Today</h2>
             <h5>
               REBASE AMOUNT:
-              {mounted ? balance && <p>{rebaseAmount}{" "} {balance.data?.symbol}</p> : null}
+              {mounted ? balance && <p>{rebaseProfitOrLoss}{" "} {balance.data?.symbol}</p> : null}
             </h5>
             <h5>
               REBASE VALUE (USD)
-              {mounted && <p>{mul.apply(undefined, [getPrice.toFixed(11), rebaseAmount] || "0")}</p>}{" "}
+              {mounted && <p>{mul.apply(undefined, [getPrice.toFixed(11), rebaseProfitOrLoss] || "0")}</p>}{" "}
             </h5>
             <h5>
               COMPOUNDED INTEREST:
