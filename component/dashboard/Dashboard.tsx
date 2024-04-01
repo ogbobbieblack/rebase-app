@@ -149,7 +149,7 @@ const Dashboard = () => {
               {mounted
                 ? balance && (
                   <p>
-                    {balance.data?.formatted} {balance.data?.symbol} {" "} {"("} {"$"}{userBalance}{")"}
+                    {balance.data?.formatted} {" "} {"("} {"$"}{userBalance}{")"}
                   </p>
                 )
                 : null}
@@ -290,16 +290,13 @@ const Dashboard = () => {
             <h2 className="text-2xl font-bold">Your Expected Base Gains For Today</h2>
             <h5>
               REBASE AMOUNT:
-              {mounted ? balance && <p>{rebaseProfitOrLoss}{" "} {balance.data?.symbol}</p> : null}
+              {mounted ? balance && <p>{rebaseProfitOrLoss}{" "}</p> : null}
             </h5>
             <h5>
               REBASE VALUE (USD)
               {mounted && <p>{mul.apply(undefined, [getPrice.toFixed(11), rebaseProfitOrLoss] || "0")}</p>}{" "}
             </h5>
-            <h5>
-              COMPOUNDED INTEREST:
-              {mounted && <p>{nextRebaseTimeStamp?.toString()}</p>}{" "}
-            </h5>
+
           </div>
         </div>
 
@@ -322,7 +319,7 @@ const Dashboard = () => {
               {mounted
                 ? amountBurnt && (
                   <p>
-                    {amountBurnt.data?.formatted} {""} {amountBurnt.data?.symbol}
+                    {amountBurnt.data?.formatted} {""}
                   </p>
                 )
                 : null}
