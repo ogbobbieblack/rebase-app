@@ -48,7 +48,8 @@ const Dashboard = () => {
   const priceTarget = 0.0005;
   const baseg_baseline = 15;
   const rebase_percent = 100;
-
+  const zero = 0;
+  
   const balance = useBalance({
     address: address,
     token: rebaseAIToken,
@@ -97,7 +98,7 @@ const Dashboard = () => {
     amountBurnt.data?.formatted,
   ]).toFixed(2) || "0";
 
-  const rebaseFixToCap = rebasePercent >= rebaseCap.toString() ? rebaseCap : rebasePercent || rebasePercent <= rebaseCap.toString() ? 0 : rebasePercent;
+ const rebaseFixToCap = rebasePercent >= rebaseCap.toString() ? rebaseCap : rebasePercent >= zero.toString() ? rebasePercent : zero
 
   const rebaseProfitOrLoss = (rebasePL.apply(undefined, [balance.data?.formatted, rebase_percent, rebaseFixToCap]) || "0");
 
